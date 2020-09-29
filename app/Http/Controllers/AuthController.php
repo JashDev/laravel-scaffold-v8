@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Users\UserRepository;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -32,25 +33,26 @@ class AuthController extends Controller
   public function login()
   {
     $dataLogin = request()->input();
-    list($rules, $messages) = $this->userRepository->validateLogin($dataLogin);
+    [$rules, $messages] = $this->userRepository->validateLogin($dataLogin);
     CheckValidate($dataLogin, $rules, $messages);
 
-    $username = $dataLogin['username'];
+    $dni = $dataLogin['dni'];
     $password = $dataLogin['password'];
 
-    $user = $this->userRepository->findByUsername($username);
+    $user = $this->userRepository->findByDni($dni);
 
-    CheckModel($user, 'El nombre de usuario es incorrecto');
+    CheckModel($user, 'DNI es incorrecto');
 
     $passwordValid = $user->validPassword($password);
 
     if (!$passwordValid) {
+      // return response([]);
       ThrowBadRequest('La contraseña es incorrecta');
     }
 
     return response([
       'user' => $user,
-      'token' => $this->generateToken($user->id)
+      'token' => $this->generateToken($user->dni)
     ], 200);
   }
 }

@@ -24,9 +24,14 @@ class AuthMiddleware
     $token = $request->headers->get('token');
 
     if (!$token) {
-      return response([
-        'message' => 'Autorización no encontrada.',
-      ], Response::HTTP_UNAUTHORIZED);
+      $token = request('token');
+
+      if (!$token) {
+        return response([
+          'message' => 'Autorización no encontrada.',
+          'token' => $token
+        ], Response::HTTP_UNAUTHORIZED);
+      }
     }
 
     try {

@@ -3,4 +3,6 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('auth/login', [AuthController::class, 'login']);
+Route::group(['prefix' => 'v1'], function () {
+  Route::post('auth/login', [AuthController::class, 'login']);
+});

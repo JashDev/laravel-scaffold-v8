@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Users\User;
 use App\Models\Users\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -25,7 +27,7 @@ class UserController extends Controller
 
     return response([
       'users' => $users
-    ], 200);
+    ], Response::HTTP_OK);
   }
 
   /**
@@ -37,38 +39,39 @@ class UserController extends Controller
   public function store()
   {
     $dataUser = request()->input();
-    list($rules, $messages) = $this->userRepository->validateNewUser($dataUser);
+
+    [$rules, $messages] = $this->userRepository->validateNewEmpleado($dataUser);
     CheckValidate($dataUser, $rules, $messages);
-    $user = $this->userRepository->newUser($dataUser);
+    $newUser = new User($dataUser);
+    $user = $this->userRepository->newUser($newUser);
 
     return response([
       'user' => $user
-    ], 201);
+    ], Response::HTTP_CREATED);
   }
 
   /**
    * Display the specified resource.
    *
-   * @param  int  $id
+   * @param  int  $dni
    * @return \Illuminate\Http\Response
    */
-  public function show($id)
+  public function show($dni)
   {
-    $user = $this->userRepository->findByUsername($id);
+    $empleado = $this->userRepository->findByDni($dni);
 
-    // Función que lanza la exepcion si el usuario no existe (Helpers.php)
-    CheckModel($user, 'El usuario no existe');
+    CheckModel($empleado, 'El empleado no existe');
 
     return response([
-      'user' => $user
-    ], 200);
+      'empleado' => $empleado
+    ], Response::HTTP_OK);
   }
 
   /**
    * Update the specified resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
+   * @param  int  $dni
    * @return \Illuminate\Http\Response
    */
   public function update(Request $request, $id)

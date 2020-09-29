@@ -7,10 +7,10 @@ use App\BaseBuilder;
 class UserBuilder extends BaseBuilder
 {
   /**
-   * Scope que filtra los usuarios según su username
+   * Scope que filtra los usuarios según su dni
    */
-  public function usernameScope($username)
+  public function dniScope($dni)
   {
-    return $this->where('username', $username);
+    return $this->where('dni', $dni);
   }
 }

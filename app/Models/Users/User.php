@@ -10,17 +10,34 @@ class User extends Model
 {
   use HasFactory;
 
-  protected $table = 'users';
+  const IS_ADMIN_DEFAULT = false;
 
-  protected $primaryKey = 'id';
+  protected $table = 'empleados';
+
+  protected $primaryKey = 'dni';
+
+  public $incrementing = false;
+
+  protected $keyType = 'string';
 
   /**
    * Array de campos que se asignan automaticamente a partir de un array
    * new User($array)
    */
   protected $fillable = [
-    'username',
-    'password'
+    'dni',
+    'password',
+    'paterno',
+    'materno',
+    'nombres',
+    'phone',
+    'email',
+    'day',
+    'month',
+  ];
+
+  protected $attributes = [
+    'admin' => self::IS_ADMIN_DEFAULT,
   ];
 
   protected static function boot()
