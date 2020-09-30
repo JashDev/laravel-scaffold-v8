@@ -25,6 +25,7 @@ class CreateClientes extends Migration
       $table->enum('tipo_documento', ['DNI', 'RUC']);
       $table->string('no_ip')->nullable();
       $table->string('router_password')->nullable();
+      $table->boolean('created_by_cliente');
       $table->timestamps();
       $table->softDeletes();
     });
