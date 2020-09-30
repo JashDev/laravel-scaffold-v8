@@ -6,15 +6,24 @@ use Exception;
 
 class CustomException extends Exception
 {
-  public function __construct($message, $code)
+  protected $details;
+
+  public function __construct($message, $code, $details = null)
   {
     parent::__construct($message, $code);
+    $this->details = $details;
   }
 
   public function render()
   {
-    return response([
+    $responseArray = [
       'message' => parent::getMessage(),
-    ], parent::getCode());
+    ];
+
+    if ($this->details && env('APP_DEBUG')) {
+      $responseArray['error_details'] = $this->details;
+    }
+
+    return response($responseArray, parent::getCode());
   }
 }

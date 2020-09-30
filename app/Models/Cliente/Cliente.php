@@ -22,6 +22,12 @@ class Cliente extends Model
     'router_password',
   ];
 
+  protected $casts = [
+    'created_at' => 'datetime:d/m/Y H:m:s',
+    'updated_at' => 'datetime:d/m/Y H:m:s',
+    'created_by_cliente' => 'bool'
+  ];
+
   public function newEloquentBuilder($query): ClienteBuilder
   {
     return new ClienteBuilder($query);

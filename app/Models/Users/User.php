@@ -20,10 +20,8 @@ class User extends Model
 
   protected $keyType = 'string';
 
-  /**
-   * Array de campos que se asignan automaticamente a partir de un array
-   * new User($array)
-   */
+  protected $hidden = ['password'];
+
   protected $fillable = [
     'dni',
     'password',
@@ -38,6 +36,12 @@ class User extends Model
 
   protected $attributes = [
     'admin' => self::IS_ADMIN_DEFAULT,
+  ];
+
+  protected $casts = [
+    'created_at' => 'datetime:d/m/Y H:m:s',
+    'updated_at' => 'datetime:d/m/Y H:m:s',
+    'admin' => 'bool',
   ];
 
   protected static function boot()

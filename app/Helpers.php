@@ -102,7 +102,7 @@ if (!function_exists('CheckModel')) {
     if (!$model) {
       throw new CustomException(
         $message ?? 'No se han encontrado el registro',
-        400
+        400,
       );
     }
   }
