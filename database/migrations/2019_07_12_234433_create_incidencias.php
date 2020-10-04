@@ -14,10 +14,10 @@ class CreateIncidencias extends Migration
   public function up()
   {
     Schema::create('incidencias', function (Blueprint $table) {
-      $table->id();
+      $table->uuid('id')->primary();
       $table->unsignedBigInteger('cliente_contacto_id');
-      $table->string('detalles');
-      $table->string('observaciones')->nullable();
+      $table->text('detalles');
+      $table->text('observaciones')->nullable();
       $table->unsignedBigInteger('estado_id')->nullable();
       $table->date('fecha_entrega')->nullable();
       $table->string('encargado_dni', 8)->nullable();
