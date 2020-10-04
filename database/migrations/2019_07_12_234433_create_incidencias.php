@@ -17,10 +17,10 @@ class CreateIncidencias extends Migration
       $table->id();
       $table->unsignedBigInteger('cliente_contacto_id');
       $table->string('detalles');
-      $table->string('observaciones');
-      $table->unsignedBigInteger('estado_id');
+      $table->string('observaciones')->nullable();
+      $table->unsignedBigInteger('estado_id')->nullable();
       $table->date('fecha_entrega')->nullable();
-      $table->string('encargado_dni', 8);
+      $table->string('encargado_dni', 8)->nullable();
       $table->unsignedBigInteger('sistema_id');
       $table->timestamps();
       $table->softDeletes();

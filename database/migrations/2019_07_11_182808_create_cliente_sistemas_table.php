@@ -17,10 +17,10 @@ class CreateClienteSistemasTable extends Migration
       $table->id();
       $table->unsignedBigInteger('cliente_id');
       $table->string('nombre', 100);
-      $table->text('descripcion');
+      $table->text('descripcion')->nullable();
       $table->date('fecha_inicio')->nullable();
       $table->text('comentarios')->nullable();
-      $table->string('encargado_dni', 8);
+      $table->string('encargado_dni', 8)->nullable();
       $table->foreign('encargado_dni')->references('dni')->on('empleados');
       $table->timestamps();
 

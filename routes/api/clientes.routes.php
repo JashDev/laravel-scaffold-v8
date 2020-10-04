@@ -10,4 +10,5 @@ Route::group(['prefix' => 'v1'], function () {
   });
 
   Route::post('cliente', [ClienteController::class, 'store']);
+  Route::get('clientes/{documento}/documento', [ClienteController::class, 'getByDocumento']);
 });

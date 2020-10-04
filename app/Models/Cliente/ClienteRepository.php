@@ -14,6 +14,16 @@ class ClienteRepository
   }
 
   /**
+   * Obtener un cliente por su numero de documento
+   */
+  public function findByDocumento($documento)
+  {
+    $cliente = $this->cliente->where('documento', $documento)
+      ->first();
+    return $cliente;
+  }
+
+  /**
    * Registrar un nuevo Cliente
    */
   public function newCliente(Cliente $cliente): ?Cliente
@@ -22,12 +32,12 @@ class ClienteRepository
       $isRegistered = $cliente->save();
 
       if (!$isRegistered) {
-        ThrowBadRequest('No se pudo registrar el empleado');
+        ThrowBadRequest('No se pudo registrar el cliente');
       }
 
       return $cliente;
     } catch (Exception $e) {
-      ThrowBadRequest('Error al registrar empleado', $e->getMessage());
+      ThrowBadRequest('Error al registrar cliente', $e->getMessage());
     }
   }
 

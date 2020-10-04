@@ -33,7 +33,7 @@ class Cliente extends Model
     return new ClienteBuilder($query);
   }
 
-  public function setRazonSocialAttribute($value)
+  public function setRazonSocialAttribute($value): void
   {
     $this->attributes['razon_social'] = strtoupper($value);
   }

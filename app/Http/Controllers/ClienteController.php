@@ -65,6 +65,21 @@ class ClienteController extends Controller
   }
 
   /**
+   * Obtener un cliente por su numero de documento
+   */
+  public function getByDocumento($documento)
+  {
+    $cliente = $this->clienteRepository->findByDocumento($documento);
+
+    CheckModel($cliente, 'No se ha obtenido un registro con el documento solicitado');
+
+    return response([
+      'message' => 'Cliente obtenido',
+      'cliente' => $cliente
+    ], Response::HTTP_OK);
+  }
+
+  /**
    * Update the specified resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
