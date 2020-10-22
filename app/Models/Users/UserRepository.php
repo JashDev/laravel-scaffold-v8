@@ -23,11 +23,22 @@ class UserRepository
   }
 
   /**
-   *  Encuentra un usuario segun su username
+   *  Encuentra un usuario segun su ID
    */
   public function findById($id): ?User
   {
     $user = $this->user->find($id);
+
+    return $user;
+  }
+
+  /**
+   *  Encuentra un usuario segun su username
+   */
+  public function findByUsername($username): ?User
+  {
+    $user = $this->user->where('username', $username)
+      ->first();
 
     return $user;
   }
