@@ -9,8 +9,8 @@ class UserBuilder extends BaseBuilder
   /**
    * Scope que filtra los usuarios según su dni
    */
-  public function dniScope($dni)
+  public function usernameScope($username)
   {
-    return $this->where('dni', $dni);
+    return $this->where('username', $username);
   }
 }

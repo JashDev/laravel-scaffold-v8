@@ -40,7 +40,7 @@ class UserController extends Controller
   {
     $dataUser = request()->input();
 
-    [$rules, $messages] = $this->userRepository->validateNewEmpleado($dataUser);
+    [$rules, $messages] = $this->userRepository->validateNewUsuario($dataUser);
     CheckValidate($dataUser, $rules, $messages);
     $newUser = new User($dataUser);
     $user = $this->userRepository->newUser($newUser);
@@ -53,17 +53,17 @@ class UserController extends Controller
   /**
    * Display the specified resource.
    *
-   * @param  int  $dni
+   * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($dni)
+  public function show($id)
   {
-    $empleado = $this->userRepository->findByDni($dni);
+    $user = $this->userRepository->findById($id);
 
-    CheckModel($empleado, 'El empleado no existe');
+    CheckModel($user, 'El usuario no existe');
 
     return response([
-      'empleado' => $empleado
+      'user' => $user
     ], Response::HTTP_OK);
   }
 

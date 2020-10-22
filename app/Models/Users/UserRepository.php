@@ -14,7 +14,7 @@ class UserRepository
   }
 
   /**
-   * Lista todos los empleados
+   * Lista todos los usuarios
    */
   public function allUsers()
   {
@@ -23,18 +23,17 @@ class UserRepository
   }
 
   /**
-   *  Encuentra un empleado segun su dni
+   *  Encuentra un usuario segun su username
    */
-  public function findByDni(string $dni): ?User
+  public function findById($id): ?User
   {
-    $user = $this->user->dniScope($dni)
-      ->first();
+    $user = $this->user->find($id);
 
     return $user;
   }
 
   /**
-   * Registra un nuevo empleado
+   * Registra un nuevo usuario
    */
   public function newUser(User $user): ?User
   {
@@ -42,39 +41,29 @@ class UserRepository
       $isRegistered = $user->save();
 
       if (!$isRegistered) {
-        ThrowBadRequest('No se pudo registrar el empleado');
+        ThrowBadRequest('No se pudo registrar el usuario');
       }
 
       return $user;
     } catch (Exception $e) {
-      // ThrowBadRequest('Error al registrar empleado');
+      // ThrowBadRequest('Error al registrar usuario');
       ThrowBadRequest($e->getMessage());
     }
   }
 
   /**
-   * Validar la información que se recibe para crear un nuevo empleado
+   * Validar la información que se recibe para crear un nuevo usuario
    */
-  public function validateNewEmpleado()
+  public function validateNewUsuario()
   {
     $rules = [
-      'dni' => 'required|unique:empleados',
-      'paterno' => 'required',
-      'materno' => 'required',
-      'nombres' => 'required',
-      'day' => 'required',
-      'month' => 'required',
+      'username' => 'required|unique:users',
       'password' => 'required'
     ];
 
     $messages = [
-      'dni.required' => 'DNI obligatorio',
-      'dni.unique' => 'El DNI ya se encuentra registrado',
-      'paterno.required' => 'El apellido paterno es obligatorio',
-      'materno.required' => 'El apellido materno es obligatorio',
-      'nombres.required' => 'Nombres es obligatorios',
-      'day.required' => 'El día de nacimiento es obligatorio',
-      'month.required' => 'El mes de nacimiento es obligatorio',
+      'username.required' => 'El nombre de usuario es obligatorio',
+      'username.unique' => 'El nombre de usuario ya se encuentra registrado',
       'password.required' => 'Contraseña obligatoria'
     ];
 
@@ -87,12 +76,12 @@ class UserRepository
   public function validateLogin()
   {
     $rules = [
-      'dni' => 'required',
+      'username' => 'required',
       'password' => 'required'
     ];
 
     $messages = [
-      'dni.required' => 'DBI obligatorio',
+      'username.required' => 'Nombre de usuario obligatorio',
       'password.required' => 'Contraseña obligatoria'
     ];
 

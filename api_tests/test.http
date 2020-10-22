@@ -1,0 +1,3 @@
+@url=http://laravel-scaffold-v8.test/
+### Test
+{{url}}api/test
