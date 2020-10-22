@@ -53,7 +53,7 @@ class AuthMiddleware
     if (!$user) {
       return response([
         'message' => 'Usted no esta autorizado a realizar esta acción',
-      ], Response::HTTP_BAD_REQUEST);
+      ], Response::HTTP_UNAUTHORIZED);
     }
 
     $routeParameters = Route::current()->parameterNames;
@@ -73,7 +73,7 @@ class AuthMiddleware
         return response([
           'message' => 'Usted no esta autorizado.',
           'http' => 'no self and not role'
-        ], Response::HTTP_BAD_REQUEST);
+        ], Response::HTTP_UNAUTHORIZED);
       }
     } else {
       if ($existsRoles) {
@@ -83,7 +83,7 @@ class AuthMiddleware
           return response([
             'message' => 'Usted no esta autorizado.',
             'http' => 'role'
-          ], Response::HTTP_BAD_REQUEST);
+          ], Response::HTTP_UNAUTHORIZED);
         }
       }
     }
