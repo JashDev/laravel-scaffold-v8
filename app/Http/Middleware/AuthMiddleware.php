@@ -9,6 +9,7 @@ use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Route;
 
 class AuthMiddleware
 {
@@ -19,7 +20,7 @@ class AuthMiddleware
    * @param  \Closure  $next
    * @return mixed
    */
-  public function handle(Request $request, Closure $next)
+  public function handle(Request $request, Closure $next, ...$roles)
   {
     $token = $request->headers->get('token');
 
@@ -55,17 +56,40 @@ class AuthMiddleware
       ], Response::HTTP_BAD_REQUEST);
     }
 
-    // TODO: userID only
-    // $userID = request('userID') ?? null;
+    $routeParameters = Route::current()->parameterNames;
+    $existsUserID = in_array('userID', $routeParameters);
+    $existsRoles = sizeof($roles) > 0;
 
-    // if ($userID && $userID != $user->id) {
-    //     return response()
-    //         ->json([
-    //             'message' => 'Usted no esta autorizado a realizar esta acción',
-    //         ], 400);
-    // }
+    if ($existsUserID) {
+      $routeValueID = Route::current()->parameter('userID');
+      $isSelf = $routeValueID == $user->id;
+      $hasRole = false;
+
+      if ($existsRoles) {
+        $hasRole = in_array($user->role, $roles);
+      }
+
+      if (!$isSelf && !$hasRole) {
+        return response([
+          'message' => 'Usted no esta autorizado.',
+          'http' => 'no self and not role'
+        ], Response::HTTP_BAD_REQUEST);
+      }
+    } else {
+      if ($existsRoles) {
+        $hasRole = in_array($user->role, $roles);
+
+        if (!$hasRole) {
+          return response([
+            'message' => 'Usted no esta autorizado.',
+            'http' => 'role'
+          ], Response::HTTP_BAD_REQUEST);
+        }
+      }
+    }
 
     $request->auth = $user;
+    $request->roles = $roles;
 
     return $next($request);
   }

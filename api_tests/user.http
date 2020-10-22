@@ -22,7 +22,8 @@ Token: {{token}}
 
 {
   "username": "usuario2",
-  "password": "12345678"
+  "password": "12345678",
+  "role": "user"
 }
 
 ### Obtener la información un solo usuario por su username

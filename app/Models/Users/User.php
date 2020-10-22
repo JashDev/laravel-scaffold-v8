@@ -18,7 +18,8 @@ class User extends Model
 
   protected $fillable = [
     'username',
-    'password'
+    'password',
+    'role'
   ];
 
   protected static function boot()
