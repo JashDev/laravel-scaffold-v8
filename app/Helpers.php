@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\CustomException;
+use App\Exceptions\ValidationException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -61,10 +62,11 @@ if (!function_exists('CheckValidate')) {
 
     if ($validator->fails()) {
       $errors = $validator->errors()->all()[0];
+      $field = $validator->errors()->keys()[0];
 
-      throw new CustomException(
+      throw new ValidationException(
         $errors,
-        402
+        $field
       );
     }
   }
