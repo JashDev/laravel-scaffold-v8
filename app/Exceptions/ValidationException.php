@@ -28,6 +28,6 @@ class ValidationException extends Exception
       $responseArray['error_details'] = $this->details;
     }
 
-    return response($responseArray, Response::HTTP_PAYMENT_REQUIRED);
+    return response($responseArray, Response::HTTP_UNPROCESSABLE_ENTITY);
   }
 }

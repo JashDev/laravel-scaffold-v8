@@ -22,6 +22,9 @@ class AuthMiddleware
    */
   public function handle(Request $request, Closure $next, ...$roles)
   {
+    $ID_USER = 'id';
+    $ROLE_USER = 'role';
+
     $token = $request->headers->get('token');
 
     if (!$token) {
@@ -62,11 +65,11 @@ class AuthMiddleware
 
     if ($existsUserID) {
       $routeValueID = Route::current()->parameter('userID');
-      $isSelf = $routeValueID == $user->id;
+      $isSelf = $routeValueID == $user[$ID_USER];
       $hasRole = false;
 
       if ($existsRoles) {
-        $hasRole = in_array($user->role, $roles);
+        $hasRole = in_array($user[$ROLE_USER], $roles);
       }
 
       if (!$isSelf && !$hasRole) {
@@ -77,7 +80,7 @@ class AuthMiddleware
       }
     } else {
       if ($existsRoles) {
-        $hasRole = in_array($user->role, $roles);
+        $hasRole = in_array($user[$ROLE_USER], $roles);
 
         if (!$hasRole) {
           return response([

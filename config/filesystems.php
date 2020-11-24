@@ -55,6 +55,13 @@ return [
       'visibility' => 'public',
     ],
 
+    'images' => [
+      'driver' => 'local',
+      'root' => storage_path('app/public/images'),
+      'url' => env('APP_URL') . '/storage/images',
+      'visibility' => 'public',
+    ],
+
     's3' => [
       'driver' => 's3',
       'key' => env('AWS_ACCESS_KEY_ID'),
@@ -63,6 +70,7 @@ return [
       'bucket' => env('AWS_BUCKET'),
       'url' => env('AWS_URL'),
       'endpoint' => env('AWS_ENDPOINT'),
+      'visibility' => 'public',
     ],
 
   ],
@@ -80,6 +88,7 @@ return [
 
   'links' => [
     public_path('storage') => storage_path('app/public'),
+    public_path('images') => storage_path('app/public/images'),
   ],
 
 ];
