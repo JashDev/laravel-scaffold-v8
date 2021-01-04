@@ -2,9 +2,8 @@
 
 use App\Models\Files\FileRepository;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 Route::get('test', function () {
   return response([
@@ -53,12 +52,8 @@ Route::get('check', function () {
 Route::post('file', function () {
   $file = request()->file('file');
 
-  try {
-    [$nameWithFolder, $name] = FileRepository::saveFile('public', 'avatars', $file);
-    $url = FileRepository::getURL('public', $nameWithFolder);
-  } catch (Exception $e) {
-    ThrowException(Response::HTTP_INTERNAL_SERVER_ERROR, 'errorcito ven a milado', $e->getMessage());
-  }
+  [$nameWithFolder, $name] = FileRepository::saveFile('public', 'avatars', $file);
+  $url = FileRepository::getURL('public', $nameWithFolder);
 
   return response([
     'name' => $name,
@@ -73,12 +68,8 @@ Route::post('file', function () {
 Route::post('file-s3', function () {
   $file = request()->file('file');
 
-  try {
-    [$nameWithFolder, $name] = FileRepository::saveFile('s3', 'avatars/spl', $file);
-    $url = FileRepository::getURL('s3', $nameWithFolder);
-  } catch (Exception $e) {
-    ThrowException(Response::HTTP_INTERNAL_SERVER_ERROR, 'errorcito ven a milado', $e->getMessage());
-  }
+  [$nameWithFolder, $name] = FileRepository::saveFile('s3', 'avatars/spl', $file);
+  $url = FileRepository::getURL('s3', $nameWithFolder);
 
   return response([
     'name' => $name,
@@ -93,12 +84,8 @@ Route::post('file-s3', function () {
 Route::post('file-images', function () {
   $file = request()->file('file');
 
-  try {
-    [$nameWithFolder, $name] = FileRepository::saveFile('images', 'avatars', $file);
-    $url = FileRepository::getURL('images', $nameWithFolder);
-  } catch (Exception $e) {
-    ThrowException(Response::HTTP_INTERNAL_SERVER_ERROR, 'errorcito ven a milado', $e->getMessage());
-  }
+  [$nameWithFolder, $name] = FileRepository::saveFile('images', 'avatars', $file);
+  $url = FileRepository::getURL('images', $nameWithFolder);
 
   return response([
     'name' => $name,
@@ -113,13 +100,18 @@ Route::post('file-images', function () {
 Route::post('delete/file', function () {
   $name = request('name');
 
-  try {
-    $isDeleted = FileRepository::deleteFile('public', $name);
-  } catch (Exception $e) {
-    ThrowException(Response::HTTP_INTERNAL_SERVER_ERROR, 'errorcito ven a milado', $e->getMessage());
-  }
+  $isDeleted = FileRepository::deleteFile('public', $name);
 
   return response([
     'deleted' => $isDeleted
   ], Response::HTTP_OK);
+});
+
+Route::post('mail', function () {
+  Mail::send('mail.reset_password', [], function ($message) {
+    $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
+    $message->to('jash.sif@gmail.com', 'Jhojhan');
+    $message->subject("Cambio de contraseña");
+    $message->priority(1);
+  });
 });

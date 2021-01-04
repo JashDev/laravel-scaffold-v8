@@ -22,8 +22,8 @@ class AuthMiddleware
    */
   public function handle(Request $request, Closure $next, ...$roles)
   {
-    $ID_USER = 'id';
-    $ROLE_USER = 'role';
+    $ID_USER = 'id'; # Nombre del campo identificador del usuario
+    $ROLE_USER = 'role'; # Nombre del campo idntificador de rol de usuario
 
     $token = $request->headers->get('token');
 
@@ -92,7 +92,6 @@ class AuthMiddleware
     }
 
     $request->auth = $user;
-    $request->roles = $roles;
 
     return $next($request);
   }
