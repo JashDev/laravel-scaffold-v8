@@ -44,6 +44,35 @@ class UserRepository
   }
 
   /**
+   *  Encuentra un usuario segun su email
+   */
+  public function findByEmail($email): ?User
+  {
+    $user = $this->user->where('email', $email)
+      ->first();
+
+    return $user;
+  }
+
+  /**
+   * Registra un nuevo usuario
+   */
+  public function saveUser(User $user): ?User
+  {
+    try {
+      $isRegistered = $user->save();
+
+      if (!$isRegistered) {
+        ThrowBadRequest('No se pudo registrar el usuario');
+      }
+
+      return $user;
+    } catch (Exception $e) {
+      ThrowBadRequest('Error al registrar usuario', $e->getMessage());
+    }
+  }
+
+  /**
    * Registra un nuevo usuario
    */
   public function newUser(User $user): ?User
@@ -57,8 +86,7 @@ class UserRepository
 
       return $user;
     } catch (Exception $e) {
-      // ThrowBadRequest('Error al registrar usuario');
-      ThrowBadRequest($e->getMessage());
+      ThrowBadRequest('Error al registrar usuario', $e->getMessage());
     }
   }
 
@@ -69,13 +97,16 @@ class UserRepository
   {
     $rules = [
       'username' => 'required|unique:users',
-      'password' => 'required'
+      'password' => 'required',
+      'email' => 'required|unique:users'
     ];
 
     $messages = [
       'username.required' => 'El nombre de usuario es obligatorio',
       'username.unique' => 'El nombre de usuario ya se encuentra registrado',
-      'password.required' => 'Contraseña obligatoria'
+      'password.required' => 'Contraseña obligatoria',
+      'email.required' => 'El email es obligatorio',
+      'email.unique' => 'El email ya se encuentra registrado',
     ];
 
     return [$rules, $messages];

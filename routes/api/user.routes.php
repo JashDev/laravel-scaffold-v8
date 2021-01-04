@@ -9,6 +9,9 @@ Route::group(['prefix' => 'v1'], function () {
   });
 
   Route::group(['prefix' => 'users'], function () {
-    Route::post('register', [UserController::class, 'store']);
+    Route::post('register', [UserController::class, 'registrar']);
+    Route::post('verificar/email', [UserController::class, 'verificarCorreo'])
+      ->middleware('email.confirmar');
+    Route::post('reenviar/verificar/email', [UserController::class, 'reenviarCorreoVerificacion']);
   });
 });
