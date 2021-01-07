@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\EmailController;
 use App\Models\Files\FileRepository;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+
+Route::get('email', [EmailController::class, 'sendEmail']);
 
 Route::get('test', function () {
   return response([
